@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>KeyDrop - Make your own rain</title>
+<meta name="description" content="KeyDrop is a fun and interactive website that allows you to create your own rain by dropping keys.">
+
+<style>
+
+
+  @font-face {
+    font-family: 'Mori';
+    src: url('https://pub-3ab59b8f25ba43769d968211da80e759.r2.dev/tf-assets/PPMori-Regular-945fa950.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  
+  * { box-sizing: border-box; }
+
+html {
+      touch-action: manipulation;
+    overflow-x: hidden;
+}
+
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: black;
+   font-family: 'Mori', sans-serif;
+    cursor: none;
+  }
+
+  /* ── Cloud header ── */
+  .headerx {
+    position: fixed;
+    top: -10px;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 742px) {
+    .headerx {
+      top: -10px;
+      width: 250%;
+    }
+  }
+
+  /* ── Raindrop images ── */
+  .raindrop {
+    position: fixed;
+    top: 0;
+    pointer-events: none;
+    z-index: 50;
+    will-change: transform, opacity;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) rotate(20deg);
+      opacity: 0;
+    }
+  }
+
+  /* ── Key label that spawns above each drop ── */
+  .key-label {
+display: none;
+  }
+
+  @keyframes labelFade {
+    0%   { opacity: 1; transform: translateY(0); }
+    60%  { opacity: 0.7; }
+    100% { opacity: 0; transform: translateY(30px); }
+  }
+
+
+
+
+  /* ── Hint overlay ── */
+  #hint {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+ font-family: 'Mori', sans-serif;
+    transform: translateX(-50%);
+    color: rgba(120, 180, 255, 0.45);
+    font-size: 20px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    pointer-events: none;
+    animation: hintPulse 2.8s ease-in-out infinite;
+    z-index: 200;
+  }
+
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 0.9; }
+  }
+
+  /* ── Custom cursor (tiny raindrop icon) ── */
+  #cursor {
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0.7;
+    transition: opacity 0.1s;
+  }
+
+  /* ── Splash effect ── */
+  .splash {
+    position: fixed;
+    pointer-events: none;
+    z-index: 49;
+    width: 40px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(100,200,255,0.55) 0%, transparent 70%);
+    animation: splashAnim 0.4s ease-out forwards;
+  }
+
+  @keyframes splashAnim {
+    0%   { transform: scaleX(0.2) scaleY(1); opacity: 1; }
+    100% { transform: scaleX(1.8) scaleY(0.2); opacity: 0; }
+  }
+
+  .no-touch{
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Cloud header -->
+<header>
+  <div class="headerx">
+    <img src="cloud.webp" alt="KeyDrop Logo" width="100%" id="cloudImg" class="no-touch">
+  </div>
+</header>
+
+<!-- Custom cursor -->
+<img id="cursor" src="raindrop.png" alt="drop cursor" class="no-touch">
+
+<!-- Hint -->
+<div id="hint">press any key to make it rain</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
