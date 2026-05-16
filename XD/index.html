@@ -116,7 +116,7 @@
 
   /* Video overlay */
   .video-overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 100;
     background: #000;
@@ -137,7 +137,7 @@
   }
 
   .close-btn {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     z-index: 200;
@@ -174,16 +174,16 @@
     </button>
     <span class="label">Play</span>
   </div>
-</div>
 
-<div class="video-overlay" id="videoOverlay">
-  <video id="vid" src="https://res.cloudinary.com/dglh7iwwb/video/upload/q_auto/f_auto/v1778930624/0516_ofnelq.mov"
-    playsinline
-    preload="none"
-  ></video>
-</div>
+  <div class="video-overlay" id="videoOverlay">
+    <video id="vid" src="https://res.cloudinary.com/dglh7iwwb/video/upload/q_auto/f_auto/v1778930624/0516_ofnelq.mov"
+      playsinline
+      preload="none"
+    ></video>
+  </div>
 
-<button class="close-btn" id="closeBtn" aria-label="Close video">&#x2715;</button>
+  <button class="close-btn" id="closeBtn" aria-label="Close video">&#x2715;</button>
+</div>
 
 <script>
   const playBtn = document.getElementById('playBtn');
@@ -194,11 +194,6 @@
   function openVideo() {
     overlay.classList.add('active');
     closeBtn.classList.add('active');
-
-    const fsEl = document.documentElement;
-    const req = fsEl.requestFullscreen || fsEl.webkitRequestFullscreen || fsEl.mozRequestFullScreen;
-    if (req) req.call(fsEl).catch(() => {});
-
     vid.play().catch(() => {});
   }
 
@@ -207,28 +202,11 @@
     vid.currentTime = 0;
     overlay.classList.remove('active');
     closeBtn.classList.remove('active');
-
-    const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen;
-    if (exitFS && (document.fullscreenElement || document.webkitFullscreenElement)) {
-      exitFS.call(document).catch(() => {});
-    }
   }
 
   playBtn.addEventListener('click', openVideo);
   closeBtn.addEventListener('click', closeVideo);
-
   vid.addEventListener('ended', closeVideo);
-
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement && overlay.classList.contains('active')) {
-      closeVideo();
-    }
-  });
-  document.addEventListener('webkitfullscreenchange', () => {
-    if (!document.webkitFullscreenElement && overlay.classList.contains('active')) {
-      closeVideo();
-    }
-  });
 </script>
 </body>
 </html>
